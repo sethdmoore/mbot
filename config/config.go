@@ -13,7 +13,7 @@ var Config Configuration
 
 type Configuration struct {
     Insecure bool
-    Username string // copy the values from our config to the embedded
+    Username string // copy the values from our config to the embedded config
     Password string
     Address  string
     Gc gumble.Config //embed the Gumble config into our config
@@ -29,7 +29,19 @@ func gumbleConfigDefaults() gumble.Config {
 
 func overrideDefaults(c *Configuration) gumble.Config {
     var gc gumble.Config
-    gc.Username = ""
+    if c.Username != "" {
+        gc.Username = c.Username
+    }
+    if c.Password != "" {
+        gc.Password = c.Password
+    }
+    if c.Address != "" {
+        gc.Address = c.Address
+    }
+    if c.Insecure {
+        gc.TLSConfig.InsecureSkipVerify = true
+    }
+    return gc
 }
 
 func init() {
@@ -43,6 +55,6 @@ func init() {
         fmt.Printf("%v\n", err)
         os.Exit(2)
     }
-    c.Gc = overrideDefaults(c)
     c.Gc = gumbleConfigDefaults()
+    c.Gc = overrideDefaults(c)
 }
