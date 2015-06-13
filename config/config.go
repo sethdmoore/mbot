@@ -5,7 +5,7 @@ import (
     "github.com/layeh/gumble/gumble"
     "os"
     "fmt"
-    //"github.com/davecgh/go-spew/spew"
+    "github.com/davecgh/go-spew/spew"
 )
 //var Configuration gumble.Config
 
@@ -44,7 +44,6 @@ func init() {
     c := &Config
     /*
     var gumbleconfig gumble.Config
-    spew.Dump(gumbleconfig)
     */
     err := envconfig.Process("mbot", c)
     if err != nil {
@@ -53,4 +52,5 @@ func init() {
     }
     gumbleConfigDefaults(&c.Gc)
     overrideDefaults(c, &c.Gc)
+    spew.Dump(c)
 }
