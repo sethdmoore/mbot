@@ -19,29 +19,29 @@ type Configuration struct {
     Gc gumble.Config //embed the Gumble config into our config
 }
 
-func gumbleConfigDefaults() gumble.Config {
-    var gc gumble.Config
-    gc.Username = "mBot"
-    gc.Password = "mbot_password"
-    gc.Address = "localhost:64738"
-    return gc
+func gumbleConfigDefaults(c *Configuration) {
+    c.Gc.Username = "mBot"
+    c.Gc.Password = "mbot_password"
+    c.Gc.Address = "localhost:64738"
 }
 
-func overrideDefaults(c *Configuration) gumble.Config {
-    var gc gumble.Config
+func overrideDefaults(c *Configuration) {
+    /*
+        Takes the values from envconfig and copies them (if applicable)
+        to the embedded gumble.Config struct
+    */
     if c.Username != "" {
-        gc.Username = c.Username
+        c.Gc.Username = c.Username
     }
     if c.Password != "" {
-        gc.Password = c.Password
+        c.Gc.Password = c.Password
     }
     if c.Address != "" {
-        gc.Address = c.Address
+        c.Gc.Address = c.Address
     }
     if c.Insecure {
-        gc.TLSConfig.InsecureSkipVerify = true
+        c.Gc.TLSConfig.InsecureSkipVerify = true
     }
-    return gc
 }
 
 func init() {
@@ -55,6 +55,7 @@ func init() {
         fmt.Printf("%v\n", err)
         os.Exit(2)
     }
-    c.Gc = gumbleConfigDefaults()
-    c.Gc = overrideDefaults(c)
+    gumbleConfigDefaults(c)
+    overrideDefaults(c)
+    // c.Gc.Username = "foo"
 }
