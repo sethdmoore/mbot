@@ -5,7 +5,7 @@ import (
     "github.com/layeh/gumble/gumble"
     "os"
     "fmt"
-    //"github.com/davecgh/go-spew/spew"
+    "github.com/davecgh/go-spew/spew"
 )
 //var Configuration gumble.Config
 
@@ -25,11 +25,7 @@ func gumbleConfigDefaults(c *Configuration) {
     c.Gc.Address = "localhost:64738"
 }
 
-func overrideDefaults(c *Configuration) {
-    /*
-        Takes the values from envconfig and copies them (if applicable)
-        to the embedded gumble.Config struct
-    */
+func overrideDefaults(c *Configuration, gc *gumble.Config) {
     if c.Username != "" {
         c.Gc.Username = c.Username
     }
@@ -48,7 +44,6 @@ func init() {
     c := &Config
     /*
     var gumbleconfig gumble.Config
-    spew.Dump(gumbleconfig)
     */
     err := envconfig.Process("mbot", c)
     if err != nil {
@@ -56,6 +51,6 @@ func init() {
         os.Exit(2)
     }
     gumbleConfigDefaults(c)
-    overrideDefaults(c)
-    // c.Gc.Username = "foo"
+    overrideDefaults(c, &c.Gc)
+    spew.Dump(c)
 }

@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+	"time"
     "github.com/sethdmoore/mbot/handlers"
     "github.com/sethdmoore/mbot/config"
     "os"
@@ -20,6 +21,8 @@ func main() {
         os.Exit(2)
     }
     fmt.Println("Hello")
-    fmt.Printf("%+v", this)
+	for {
+		time.Sleep(1.0)
+	}
 
 }
